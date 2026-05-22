@@ -1,0 +1,4 @@
+datasource:
+  jpa:
+    hibernate:
+      ddl-auto: update
