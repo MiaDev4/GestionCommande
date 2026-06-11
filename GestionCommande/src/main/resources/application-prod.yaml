@@ -1,3 +1,4 @@
 spring:
-  application:
-    name: GestionCommande
+    jpa:
+    hibernate:
+      ddl-auto: none
