@@ -9,9 +9,6 @@ import sn.edu.isepat.dbe.p6.GestionCommande.entities.Utilisateur;
 import sn.edu.isepat.dbe.p6.GestionCommande.repositories.RoleRepositories;
 import sn.edu.isepat.dbe.p6.GestionCommande.repositories.Utilisateurripositories;
 
-
-
-
 @Service
 @RequiredArgsConstructor
 public class UtilisateurService {
@@ -19,7 +16,13 @@ public class UtilisateurService {
     private final RoleRepositories roleRepositories;
 
     private UtilisateurDto toDTO(Utilisateur utilisateur) {
-        return new UtilisateurDto();
+        UtilisateurDto dto = new UtilisateurDto();
+        dto.setId(utilisateur.getId());
+        dto.setNomUtilisateur(utilisateur.getNomUtilisateur());
+        dto.setEmail(utilisateur.getEmail());
+        dto.setEtatCompte(utilisateur.isEtatCompte());
+        dto.setRoles(utilisateur.getRoles());
+        return dto;
     }
 
     @Transactional(readOnly = true)
@@ -28,22 +31,20 @@ public class UtilisateurService {
                 .stream().map(this::toDTO)
                 .collect(Collectors.toList());
     }
+
     @Transactional
     public UtilisateurDto createUtilisateur(UtilisateurDto utilisateurDto) {
-        // Vérifier si le nom d'utilisateur ou l'email existe déjà
         if (utilisateurRipositories.findByEmail(utilisateurDto.getEmail()).isPresent() ||
             utilisateurRipositories.findByNomUtilisateur(utilisateurDto.getNomUtilisateur()).isPresent()) {
             throw new IllegalArgumentException("Le nom d'utilisateur ou l'email existe déjà");
         }
 
-        // Créer un nouvel utilisateur
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setNomUtilisateur(utilisateurDto.getNomUtilisateur());
         utilisateur.setEmail(utilisateurDto.getEmail());
         utilisateur.setMotPasse(utilisateurDto.getMotPasse());
-        utilisateur.setEtatCompte(true); 
+        utilisateur.setEtatCompte(true);
 
-        // Assigner les rôles à l'utilisateur
         if (utilisateurDto.getRoles() != null) {
             var roles = utilisateurDto.getRoles().stream()
                     .map(role -> roleRepositories.findByNom(role.getNom())
@@ -52,11 +53,10 @@ public class UtilisateurService {
             utilisateur.setRoles(roles);
         }
 
-        // Enregistrer l'utilisateur dans la base de données
         Utilisateur savedUtilisateur = utilisateurRipositories.save(utilisateur);
         return toDTO(savedUtilisateur);
-        
     }
+
     @Transactional
     public void deleteUtilisateur(long id) {
         if (!utilisateurRipositories.existsById(id)) {
@@ -65,6 +65,34 @@ public class UtilisateurService {
         utilisateurRipositories.deleteById(id);
     }
 
-    
+    @Transactional(readOnly = true)
+    public UtilisateurDto getUtilisateurById(long id) {
+        Utilisateur utilisateur = utilisateurRipositories.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id: " + id));
+        return toDTO(utilisateur);
+    }
+
+    @Transactional
+    public UtilisateurDto updateUtilisateur(long id, UtilisateurDto utilisateurDto) {
+        Utilisateur utilisateur = utilisateurRipositories.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé avec l'id: " + id));
+
+        utilisateur.setNomUtilisateur(utilisateurDto.getNomUtilisateur());
+        utilisateur.setEmail(utilisateurDto.getEmail());
+        if (utilisateurDto.getMotPasse() != null && !utilisateurDto.getMotPasse().isEmpty()) {
+            utilisateur.setMotPasse(utilisateurDto.getMotPasse());
+        }
+        utilisateur.setEtatCompte(utilisateurDto.isEtatCompte());
+
+        if (utilisateurDto.getRoles() != null) {
+            var roles = utilisateurDto.getRoles().stream()
+                    .map(role -> roleRepositories.findByNom(role.getNom())
+                            .orElseThrow(() -> new IllegalArgumentException("Rôle non trouvé: " + role.getNom())))
+                    .collect(Collectors.toSet());
+            utilisateur.setRoles(roles);
+        }
+
+        return toDTO(utilisateurRipositories.save(utilisateur));
+    }
 }
 
