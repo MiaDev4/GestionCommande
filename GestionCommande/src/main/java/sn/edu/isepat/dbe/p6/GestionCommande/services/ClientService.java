@@ -19,6 +19,18 @@ public class ClientService {
     public List<ClientEntity> getAll() {
         return clientRepository.findAll();
     }
+   public ClientEntity updateClient(Long id, ClientEntity client) {
+
+        ClientEntity clientExistant = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client introuvable"));
+
+        clientExistant.setNom(client.getNom());
+        clientExistant.setEmail(client.getEmail());
+        clientExistant.setEmail(client.getEmail());
+
+        return clientRepository.save(clientExistant);
+    }
+        
 
     public void delete(Long id) {
         clientRepository.deleteById(id);
