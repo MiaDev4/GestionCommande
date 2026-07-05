@@ -1,8 +1,8 @@
-package sn.edu.isepat.dbe.p6.GestionCommande.repository;
+package sn.edu.isepat.dbe.p6.GestionCommande.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import sn.edu.isepat.dbe.p6.GestionCommande.entity.LigneCommande;
+import sn.edu.isepat.dbe.p6.GestionCommande.entities.LigneCommande;
 
 import java.util.List;
 

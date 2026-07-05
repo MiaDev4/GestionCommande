@@ -1,4 +1,4 @@
-package sn.edu.isepat.dbe.p6.GestionCommande.entity;
+package sn.edu.isepat.dbe.p6.GestionCommande.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,10 +16,8 @@ public class LigneCommande {
       @GeneratedValue(strategy = GenerationType.IDENTITY)
       private Long id;
 
-
-      @ManyToOne
-      @JoinColumn(name = "idProduit", nullable = false)
-      private Produit produit;
+      @Column(name = "produitId")
+      private Long produitId;
 
       @Column(nullable = false)
       private Integer quantite;

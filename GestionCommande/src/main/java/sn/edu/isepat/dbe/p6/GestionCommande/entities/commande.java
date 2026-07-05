@@ -1,4 +1,4 @@
-package sn.edu.isepat.dbe.p6.GestionCommande.entity;
+package sn.edu.isepat.dbe.p6.GestionCommande.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,9 +25,8 @@ public class Commande {
       @Column(nullable = false)
       private StatutCommande status;
 
-      @ManyToOne
-      @JoinColumn(name = "idClient", nullable = false)
-      private Client client;
+      @Column(name = "clientId")
+      private Long clientId;
 
       @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
       private List<LigneCommande> lignes = new ArrayList<>();
