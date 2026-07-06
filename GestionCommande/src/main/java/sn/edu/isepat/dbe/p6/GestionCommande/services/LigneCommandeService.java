@@ -34,7 +34,7 @@ public class LigneCommandeService {
     LigneCommande ligne = new LigneCommande();
 
     ligne.setCommande(commande);
-    ligne.setProduitId(dto.getIdProduit());
+    ligne.setIdProduit(dto.getIdProduit());
     ligne.setQuantite(dto.getQuantite());
     ligne.setPrixUnitaire(dto.getPrixUnitaire());
 
@@ -50,7 +50,7 @@ private LigneCommandeDTO toDTO(LigneCommande ligne) {
     LigneCommandeDTO dto = new LigneCommandeDTO();
 
     dto.setId(ligne.getId());
-    dto.setIdProduit(ligne.getProduitId());
+    dto.setIdProduit(ligne.getIdProduit());
     dto.setQuantite(ligne.getQuantite());
     dto.setPrixUnitaire(ligne.getPrixUnitaire());
 
@@ -93,8 +93,6 @@ public void supprimerLigne(Long id) {
                     CommandeException.badRequest("Ligne de commande n'existe pas"));
     ligneCommandeRepository.delete
     (ligneCommande);
-
-
 
 }
 

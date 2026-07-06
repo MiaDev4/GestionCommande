@@ -14,7 +14,7 @@ public class CommandeDTO {
       private Long id;
       private LocalDateTime dateCommande;
       private StatutCommande status;
-      private Long idClient;
+      private Long clientId;
       private List<LigneCommandeDTO> lignes;
       private Double total;
 }

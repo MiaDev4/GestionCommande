@@ -30,11 +30,6 @@ public class CommandeService {
         commande.setDateCommande(LocalDateTime.now());
         commande.setStatus(Commande.StatutCommande.CREATED);
 
-        // ⚠️ à adapter quand ton coéquipier crée Client
-        // Client client = clientRepository.findById(dto.getClientId())
-        // .orElseThrow(() -> new ResourceNotFoundException("Client introuvable"));
-        // commande.setClient(client);
-
         Commande saved = commandeRepository.save(commande);
         return toDTO(saved);
     }
@@ -83,10 +78,6 @@ public class CommandeService {
         commandeRepository.deleteById(id);
     }
 
-    // -------------------------
-    // Règles métier avancées
-    // -------------------------
-
     // Valider une commande
     @Transactional
     public CommandeDTO validerCommande(Long id) {
@@ -125,10 +116,6 @@ public class CommandeService {
         return toDTO(updated);
     }
 
-    // -------------------------
-    // Requêtes avancées
-    // -------------------------
-
     // Commandes d'un client
     public List<CommandeDTO> getCommandesParClient(Long clientId) {
         return commandeRepository.findByClientId(clientId)
@@ -156,10 +143,6 @@ public class CommandeService {
         return commandeRepository.totalCommandesParClient();
     }
 
-    // -------------------------
-    // Mapper entité -> DTO
-    // -------------------------
-
     private CommandeDTO toDTO(Commande commande) {
         CommandeDTO dto = new CommandeDTO();
         dto.setId(commande.getId());
@@ -167,7 +150,7 @@ public class CommandeService {
         dto.setStatus(commande.getStatus());
 
         if (commande.getClientId() != null) {
-            dto.setIdClient(commande.getClientId());
+            dto.setClientId(commande.getClientId());
         }
 
         List<LigneCommandeDTO> lignesDTO = commande.getLignes()
@@ -191,8 +174,8 @@ public class CommandeService {
         dto.setQuantite(ligne.getQuantite());
         dto.setPrixUnitaire(ligne.getPrixUnitaire());
 
-        if (ligne.getProduitId() != null) {
-            dto.setIdProduit(ligne.getProduitId());
+        if (ligne.getIdProduit() != null) {
+            dto.setIdProduit(ligne.getIdProduit());
         }
 
         if (ligne.getPrixUnitaire() != null && ligne.getQuantite() != null) {
