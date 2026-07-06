@@ -1,6 +1,5 @@
 package sn.edu.isepat.dbe.p6.GestionCommande.dto;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.math.BigDecimal;

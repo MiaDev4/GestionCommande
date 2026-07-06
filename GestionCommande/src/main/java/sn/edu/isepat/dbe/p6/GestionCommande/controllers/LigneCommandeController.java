@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import sn.edu.isepat.dbe.p6.GestionCommande.dto.LigneCommandeDTO;
 import sn.edu.isepat.dbe.p6.GestionCommande.services.LigneCommandeService;
 
 @RestController
 @RequestMapping("/api/ligneCommande")
+@Tag(name = "créer ligne de commande", description = "gestion ligne Commande")
 public class LigneCommandeController {
 
     // injection du service
@@ -25,6 +29,7 @@ public class LigneCommandeController {
     }
 
     @PostMapping("/{commandeId}")
+    @Operation(summary = "ajout", description = "Ajouter une ligne de commande")
     public ResponseEntity<LigneCommandeDTO> ajouterLigne(
             @PathVariable Long commandeId,
             @RequestBody LigneCommandeDTO dto) {
@@ -35,6 +40,7 @@ public class LigneCommandeController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Modification", description = "Modifierù une ligne de commande")
     public ResponseEntity<LigneCommandeDTO> modifierLigne(
             @PathVariable Long id,
             @RequestBody LigneCommandeDTO dto) {
