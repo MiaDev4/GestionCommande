@@ -51,6 +51,7 @@ public class LigneCommandeController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Supprimer", description = "supprimer une ligne de commande")
     public ResponseEntity<Void> supprimerLigne(@PathVariable Long id) {
 
         ligneCommandeService.supprimerLigne(id);

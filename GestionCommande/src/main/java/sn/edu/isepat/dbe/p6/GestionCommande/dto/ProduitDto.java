@@ -17,4 +17,6 @@ public class ProduitDto {
      private BigDecimal prix;
 
      private Integer stock;
+
+     private Long createurId;
 }

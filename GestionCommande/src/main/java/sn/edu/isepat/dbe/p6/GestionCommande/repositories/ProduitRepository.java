@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
      Optional<Produit> findByNom(String email);
+     boolean existsByNom(String nom);
 }
